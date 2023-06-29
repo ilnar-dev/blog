@@ -1,0 +1,24 @@
+<%- include('header'); %>
+
+    <main role="main" class="col-md-9">
+        <h1>Software engineering blog</h1>
+        <div class="articles-list">
+            <% articles.forEach(function(article) { %>
+                <div>
+                    <h2>
+                        <%=article.title%>
+                    </h2>
+                    <p>
+                        <%=article.text%>
+                    </p>
+                    <% if (article.mainImage) { %>
+                        <div>
+                            <img src="/uploads/<%= article.mainImage.filename %>" alt="main image" class="img-thumbnail">
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+<%- include('footer'); %>
