@@ -1,4 +1,4 @@
-import { getAll } from '../../repositories/ArticleRepository.js';
+import { getAll } from '../../repositories/article-repository.js';
 
 export function index (req, res) {
     getAll()

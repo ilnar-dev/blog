@@ -1,7 +1,7 @@
 import { Router } from 'express'
 const router = Router()
-import { list, edit, add, create, update } from '../controllers/admin/ArticleController.js'
-import { temp, upload } from '../controllers/admin/ImageController.js'
+import { list, edit, add, create, update } from '../controllers/admin/article-controller.js'
+import { temp, upload } from '../controllers/admin/image-controller.js'
 
 router.get('/', function (req, res) {
     res.render("admin/index")

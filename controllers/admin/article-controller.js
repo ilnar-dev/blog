@@ -1,7 +1,7 @@
-import { getAll, find } from '../../repositories/ArticleRepository.js'
-import { perform } from '../../useCases/UploadImage.js'
-import { perform as _perform } from '../../useCases/UpdateArticle.js'
-import { perform as __perform } from '../../useCases/CreateArticle.js'
+import { getAll, find } from '../../repositories/article-repository.js'
+import { perform } from '../../useCases/upload-image.js'
+import { perform as _perform } from '../../useCases/update-article.js'
+import { perform as __perform } from '../../useCases/create-article.js'
 import Article from '../../models/article.js'
 
 export function list (req, res) {
