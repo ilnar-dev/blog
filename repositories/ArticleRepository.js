@@ -61,7 +61,6 @@ export function getAll () {
 
             let articles = []
             results.forEach(element => {
-                console.log(element)
                 let article = new Article()
                 article.id = element.id
                 article.title = element.title
