@@ -6,13 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <title>Document</title>
 </head>
 
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Blog</a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
@@ -28,13 +26,13 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/admin">
+                        <a class="nav-link <% if (url === '/admin') { %> active <% } %>" href="/admin">
                             <span data-feather="home"></span>
                             Main
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/articles">
+                        <a class="nav-link <% if (url.includes('articles')) { %> active <% } %>" href="/admin/articles">
                             <span data-feather="file"></span>
                             Articles
                         </a>

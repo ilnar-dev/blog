@@ -1,30 +1,26 @@
 import connection from '../../models/db.js';
 import { format } from 'mysql';
-// const Image = require('../../models/article')
-
-export function temp(req, res) {
-    res.render("admin/image")
-}
 
 export function upload(req, res) {
-    let uploadPath = '/Users/ilnar/Projects/Blog/public/uploads/' + req.files.file.name
+    let filename = req.files.upload.name;
+    let uploadPath = '/Users/ilnar/Projects/Blog/public/uploads/' + filename
 
-    req.files.file.mv(uploadPath)
+    req.files.upload.mv(uploadPath)
         .then(
-            (result) => {
-                return new Promise((resolve, reject) => {
+            () => {
+                return new Promise((resolve) => {
                     let sql = "" +
-                        "INSERT INTO images (file_name, path) VALUES (?, ?)";
-                    let inserts = [req.files.file.name, uploadPath];
+                        "INSERT INTO image (file_name, path) VALUES (?, ?)";
+                    let inserts = [filename, uploadPath];
                     sql = format(sql, inserts);
 
-                    connection(sql, function (error, results, fields) {
+                    connection.query(sql, function (error, results) {
                         if (error) throw error;
                         resolve(results)
                     })
                 })
             })
         .then(
-            res.redirect("admin/image")
+            res.json({ "url": "/uploads/" + filename })
         )
 }

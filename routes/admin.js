@@ -1,21 +1,19 @@
-import { Router } from 'express'
-const router = Router()
-import { list, edit, add, create, update } from '../controllers/admin/article-controller.js'
-import { temp, upload } from '../controllers/admin/image-controller.js'
+import { Router } from 'express';
+const router = Router();
+import { list, edit, add, create, update } from '../controllers/admin/article-controller.js';
+import { upload } from '../controllers/admin/image-controller.js';
+import { index } from '../controllers/admin/index-controller.js';
 
-router.get('/', function (req, res) {
-    res.render("admin/index")
-})
+router.get('/', index);
 
 // Articles
-router.get('/articles', list)
-router.get('/articles/:id(\\d+)', edit)
-router.get('/articles/add', add)
-router.post('/articles', create)
-router.post('/articles/:id', update)
+router.get('/articles', list);
+router.get('/articles/:id(\\d+)', edit);
+router.get('/articles/add', add);
+router.post('/articles', create);
+router.post('/articles/:id', update);
 
 // Images
-router.get('/images', temp)
-router.post('/images', upload)
+router.post('/images', upload);
 
-export default router
+export default router;

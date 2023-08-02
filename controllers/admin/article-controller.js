@@ -6,13 +6,13 @@ import Article from '../../models/article.js'
 
 export function list (req, res) {
     getAll()
-        .then(articles => res.render("admin/articles", {articles: articles}))
+        .then(articles => res.render("admin/articles", {articles: articles, url: req.originalUrl}))
 }
 
 export function edit (req, res) {
     let id = req.params.id
     find(id)
-        .then(article => res.render("admin/article", article))
+        .then(article => res.render("admin/article", {article: article, url: req.originalUrl}))
 }
 
 export function update (req, res) {
