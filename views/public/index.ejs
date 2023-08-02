@@ -9,10 +9,10 @@
                 <div class="col-md-2">
                     <p>12.10.2023</p>
                 </div>
-                <div class="col-md-10">    
+                <div class="col-md-10">
                     <h2><%=article.title%></h2>
-                </div>    
-            </div>        
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-2">
                     <% if (article.mainImage) { %>
@@ -22,9 +22,9 @@
                     <% } %>
                 </div>
                 <div class="col-md-10">
-                    <p><%=article.text%></p>
+                    <%-article.text%>
                 </div>
-            </div>  
+            </div>
             <hr>
         <% }) %>
     </main>
