@@ -10,7 +10,7 @@ export function perform (image) {
         .then((result) => {
             return new Promise((resolve, reject) => {
                 let sql = "" +
-                    "INSERT INTO images (file_name, path) VALUES (?, ?)";
+                    "INSERT INTO image (file_name, path) VALUES (?, ?)";
                 let inserts = [image.name, uploadPath];
                 sql = format(sql, inserts);
 

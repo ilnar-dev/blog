@@ -1,6 +1,6 @@
-import { getAll } from '../../repositories/article-repository.js';
+import { getPublished } from '../../repositories/article-repository.js';
 
 export function index (req, res) {
-    getAll()
+    getPublished()
         .then(articles => res.render("public/index", {articles: articles}));
 }
