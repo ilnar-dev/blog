@@ -1,19 +1,40 @@
-import express from 'express'
-import fileUpload from 'express-fileupload'
-import adminRouter from './routes/admin.js'
-import publicRouter from './routes/public.js'
+import express from 'express';
+import session from 'express-session';
+import redis from 'ioredis';
+import RedisStore from 'connect-redis';
+import fileUpload from 'express-fileupload';
+import passport from './config/passport.js';
+import adminRouter from './routes/admin.js';
+import publicRouter from './routes/public.js';
 
+const app = express();
 
-const app = express()
-
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
-app.use(express.urlencoded({extended: false}))
-app.use(fileUpload({}))
-
-app.use('/', publicRouter)
-app.use('/admin', adminRouter)
+app.use(express.urlencoded({extended: false}));
+app.use(fileUpload({}));
 
 
-app.listen(3000)
+const redisClient = redis.createClient({
+    host: 'localhost',
+    port: 6379
+});
+
+app.use(session({
+    store: new RedisStore({ client: redisClient}),
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+    // cookie: { secure: true } // For https connection set true
+}));
+
+app.use(passport.initialize({}));
+app.use(passport.session({}));
+
+// Routers
+app.use('/', publicRouter);
+app.use('/admin', adminRouter);
+
+
+app.listen(3000);
