@@ -1,11 +1,11 @@
-import { createConnection } from 'mysql';
-const connection = createConnection({
-    host     : 'localhost',
-    user     : 'blog',
-    password : 'blog',
-    database : 'blog'
+import { createPool } from 'mysql';
+
+const pool = createPool({
+    host: 'blog-db8',
+    user: 'blog',
+    password: 'blog',
+    database: 'blog',
+    connectionLimit: 10
 });
 
-connection.connect();
-
-export default connection
+export default pool;
