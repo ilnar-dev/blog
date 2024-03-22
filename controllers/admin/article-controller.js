@@ -44,7 +44,6 @@ export async function update(req, res) {
             res.redirect("/admin/articles/" + id);
         }
     } catch (error) {
-        console.log(error);
         res.status(404).send('Article not found'); //todo: make a redirect to 404 page
     }
 }

@@ -22,6 +22,11 @@
             <label for="current-password">Password</label>
             <input id="current-password" name="password" type="password" autocomplete="current-password" required>
         </section>
+        <section>
+            <% messages.forEach(function(message) { %>
+                <p> <%=message%> </p>
+            <% }) %>
+        </section>
         <button type="submit">Sign in</button>
     </form>
 </main>

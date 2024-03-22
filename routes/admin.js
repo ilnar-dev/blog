@@ -16,7 +16,8 @@ router.get('/', ensureAuthenticated, index);
 router.get('/login', login);
 router.post('/authenticate', passport.authenticate('local', {
     successRedirect: '/admin',
-    failureRedirect: '/admin/login'
+    failureRedirect: '/admin/login',
+    failureMessage: true
 }), (req, resp, next) => {});
 
 // Articles
