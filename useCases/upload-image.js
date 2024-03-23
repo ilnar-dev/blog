@@ -3,7 +3,7 @@ import { format } from 'mysql';
 import Image from '../models/image.js';
 
 export function perform (image) {
-    const uploadDir = '/Users/ilnar/Projects/Blog/public/uploads/'; //todo: rename to be not machine specific
+    const uploadDir = process.env.UPLOAD_DIR;
     let uploadPath = uploadDir + image.name;
 
     return image.mv(uploadPath)

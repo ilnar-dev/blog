@@ -17,8 +17,8 @@ app.use(fileUpload({}));
 
 
 const redisClient = redis.createClient({
-    host: 'blog-redis',
-    port: 6379
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
 });
 
 app.use(session({
@@ -28,7 +28,6 @@ app.use(session({
     saveUninitialized: true
     // cookie: { secure: true } // For https connection set true
 }));
-//test
 
 app.use(passport.initialize({}));
 app.use(passport.session({}));
@@ -37,6 +36,6 @@ app.use(passport.session({}));
 app.use('/', publicRouter);
 app.use('/admin', adminRouter);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.listen(port);

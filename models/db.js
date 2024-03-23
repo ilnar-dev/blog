@@ -1,10 +1,10 @@
 import { createPool } from 'mysql';
 
 const pool = createPool({
-    host: 'blog-db8',
-    user: 'blog',
-    password: 'blog',
-    database: 'blog',
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
     connectionLimit: 10
 });
 
