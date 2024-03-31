@@ -11,7 +11,11 @@ export function find (id) {
             if (error) reject(error);
             resolve(results)
         })
-    }).then((results) => {
+    })
+    .then((results) => {
+        if (results.length === 0) {
+            throw new Error('Article not found');
+        }
         return new Promise((resolve, reject) => {
             let waitForImage = null;
             let article = new Article();

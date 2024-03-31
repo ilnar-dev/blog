@@ -42,5 +42,16 @@
 <!--    });-->
 <!--</script>-->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+<!-- My scripts -->
+<script>
+    $(document).ready(function () {
+        $(".img-thumbnail").on("click", function (e) {
+            // $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+            $('.imagepreview').attr('src', e.target.currentSrc);
+			$('#imagemodal').modal('show');   
+        });
+    });
+</script>
 </body>
 </html>

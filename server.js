@@ -23,10 +23,12 @@ const redisClient = redis.createClient({
 
 app.use(session({
     store: new RedisStore({ client: redisClient}),
-    secret: 'keyboard cat',
+    secret: 'keyboard cat', // TODO: pass it as an environment variable
     resave: false,
-    saveUninitialized: true
-    // cookie: { secure: true } // For https connection set true
+    saveUninitialized: true,
+    cookie: { 
+        secure: process.env.NODE_ENV === 'production' ? true : false 
+    }
 }));
 
 app.use(passport.initialize({}));

@@ -13,6 +13,7 @@ export function edit (req, res) {
     let id = req.params.id
     find(id)
         .then(article => res.render("admin/article", {article: article, url: req.originalUrl}))
+        .catch(error => res.status(404).send(error.message))
 }
 
 export async function update(req, res) {

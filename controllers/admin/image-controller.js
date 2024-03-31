@@ -23,4 +23,7 @@ export function upload(req, res) {
         .then(
             res.json({ "url": "/uploads/" + filename })
         )
+        .catch((error) => {
+            res.status(500).send(error.message)
+        })
 }
