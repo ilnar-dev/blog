@@ -6,6 +6,7 @@ import fileUpload from 'express-fileupload';
 import passport from './config/passport.js';
 import adminRouter from './routes/admin.js';
 import publicRouter from './routes/public.js';
+import visitor from './middlewares/visitor.js';
 
 const app = express();
 
@@ -31,8 +32,10 @@ app.use(session({
     }
 }));
 
+// Middlewares
 app.use(passport.initialize({}));
 app.use(passport.session({}));
+app.use(visitor)
 
 // Routers
 app.use('/', publicRouter);
