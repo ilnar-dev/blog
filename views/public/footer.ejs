@@ -47,9 +47,8 @@
 <script>
     $(document).ready(function () {
         $(".img-thumbnail").on("click", function (e) {
-            // $('.imagepreview').attr('src', $(this).find('img').attr('src'));
             $('.imagepreview').attr('src', e.target.currentSrc);
-			$('#imagemodal').modal('show');   
+            $('#imagemodal').modal('show');   
         });
     });
 </script>
