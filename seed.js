@@ -20,7 +20,7 @@ rl.question('Enter username: ', (username) => {
 
             const user = new User();
             user.name = username;
-            user.email = `${username}@localhost`;
+            user.email = email;
             user.password = hash;
             user.salt = salt;
 
