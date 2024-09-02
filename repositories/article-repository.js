@@ -91,7 +91,7 @@ export function getPublished() {
                 article.published,
                 article.published_on,
                 image.file_name
-            FROM article JOIN image ON image.id = article.main_image_id
+            FROM article LEFT JOIN image ON image.id = article.main_image_id
             WHERE article.published = 1`;
 
         connection.query(queryString, function (error, results, fields) {
