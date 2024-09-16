@@ -2,8 +2,8 @@ import connection from '../models/db.js';
 import { format } from 'mysql';
 import Article from '../models/article.js';
 
-export function find (id) {
-    return new Promise((resolve, reject) => {
+export function find(id: number): Promise<Article> {
+    return new Promise<any[]>((resolve, reject) => {
         let sql = 'SELECT * FROM article WHERE id = ?'
         sql = format(sql, [id]);
 
@@ -12,11 +12,11 @@ export function find (id) {
             resolve(results)
         })
     })
-    .then((results) => {
+    .then((results: any[]) => {
         if (results.length === 0) {
             throw new Error('Article not found');
         }
-        return new Promise((resolve, reject) => {
+        return new Promise<Article>((resolve, reject) => {
             let waitForImage = null;
             let article = new Article();
             article.id = results[0].id;
@@ -27,14 +27,13 @@ export function find (id) {
             article.publishedOn = results[0].published_on;
             article.published = results[0].published;
             if (results[0].main_image_id) {
-                waitForImage = new Promise((resolve, reject) => {
-                    let queryString = 'SELECT * FROM image WHERE id = ' + results[0].main_image_id
-
-                    connection.query(queryString, function (error, results, fields) {
+                waitForImage = new Promise<any[]>((resolve, reject) => {
+                    let queryString = 'SELECT * FROM image WHERE id = ?';
+                    connection.query(queryString, [results[0].main_image_id], function (error, results, fields) {
                         if (error) reject(error);
                         resolve(results);
-                    })
-                })
+                    });
+                });
             }
             if (null === waitForImage) {
                 resolve(article);
@@ -43,7 +42,7 @@ export function find (id) {
                     .then((imageResults) => {
                         article.mainImage = {
                             filename: imageResults[0].file_name
-                        }
+                        };
 
                         resolve(article);
                     })
@@ -53,7 +52,7 @@ export function find (id) {
     })
 }
 
-export function getAll () {
+export function getAll(): Promise<Article[]> {
     return new Promise((resolve, reject) => {
         let queryString = `
             SELECT 
@@ -69,8 +68,8 @@ export function getAll () {
         connection.query(queryString, function (error, results, fields) {
             if (error) reject(error);
 
-            let articles = [];
-            results.forEach(element => {
+            let articles: Article[] = [];
+            results.forEach((element: any) => {
                 let article = createArticleFromRow(element);
                 articles.push(article);
             })
@@ -80,7 +79,7 @@ export function getAll () {
     })
 }
 
-export function getPublished() {
+export function getPublished(): Promise<Article[]> {
     return new Promise((resolve, reject) => {
         let queryString = `
             SELECT 
@@ -97,8 +96,8 @@ export function getPublished() {
         connection.query(queryString, function (error, results, fields) {
             if (error) reject(error);
 
-            let articles = [];
-            results.forEach(element => {
+            let articles: Article[] = [];
+            results.forEach((element: any) => {
                 let article = createArticleFromRow(element);
                 articles.push(article);
             })
@@ -108,7 +107,7 @@ export function getPublished() {
     });
 }
 
-function createArticleFromRow(row) {
+function createArticleFromRow(row: any): Article {
     let article = new Article();
     article.id = row.id;
     article.title = row.title;

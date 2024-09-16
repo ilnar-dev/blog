@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { list, edit, add, create, update } from '../controllers/admin/article-controller.js';
 import { upload } from '../controllers/admin/image-controller.js';
 import { index, login } from '../controllers/admin/index-controller.js';
 import passport from "passport";
 
-function ensureAuthenticated(req, res, next) {
+function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/admin/login')
 }

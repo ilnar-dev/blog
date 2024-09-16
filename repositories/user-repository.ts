@@ -2,8 +2,8 @@ import connection from '../models/db.js';
 import { format } from 'mysql';
 import User from '../models/user.js';
 
-export async function findByEmail (email) {
-    return new Promise((resolve, reject) => {
+export async function findByEmail (email: string): Promise<User> {
+    return new Promise<any>((resolve, reject) => {
         let sql = 'SELECT * FROM user WHERE email = ?'
         sql = format(sql, [email]);
 
@@ -11,10 +11,10 @@ export async function findByEmail (email) {
             if (error) reject(error);
             resolve(results)
         })
-    }).then((results) => {
-        return new Promise((resolve, reject) => {
+    }).then((results: any) => {
+        return new Promise<User>((resolve, reject) => {
             if (results.length === 0) {
-                resolve(null);
+                resolve(new User());
             }
             let user = new User();
             user.id = results[0].id;
@@ -25,13 +25,11 @@ export async function findByEmail (email) {
 
             resolve(user);
         });
-    }).catch((error) => {
-        console.log(error);
     });
 }
 
-export async function findById (id) {
-    return new Promise((resolve, reject) => {
+export async function findById (id: number): Promise<User> {
+    return new Promise<any>((resolve, reject) => {
         let sql = 'SELECT * FROM user WHERE id = ?'
         sql = format(sql, [id]);
 
@@ -50,12 +48,10 @@ export async function findById (id) {
 
             resolve(user);
         });
-    }).catch((error) => {
-        console.log(error);
     });
 }
 
-export async function create (user) {
+export async function create (user: User) {
     return new Promise((resolve, reject) => {
         let sql = 'INSERT INTO user (name, email, password, salt) VALUES (?, ?, ?, ?)'
         sql = format(sql, [user.name, user.email, user.password, user.salt]);
@@ -64,7 +60,7 @@ export async function create (user) {
             if (error) reject(error);
             resolve(results)
         })
-    }).then((results) => {
+    }).then((results: any) => {
         return new Promise((resolve, reject) => {
             let user = new User();
             user.id = results.insertId;

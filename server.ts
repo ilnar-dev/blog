@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import redis from 'ioredis';
+import { Redis } from 'ioredis';
 import RedisStore from 'connect-redis';
 import fileUpload from 'express-fileupload';
 import passport from './config/passport.js';
@@ -17,9 +17,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(fileUpload({}));
 
 
-const redisClient = redis.createClient({
+const redisClient = new Redis({
     host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
+    port: Number(process.env.REDIS_PORT)
 });
 
 app.use(session({
@@ -34,7 +34,7 @@ app.use(session({
 
 // Middlewares
 app.use(passport.initialize({}));
-app.use(passport.session({}));
+app.use(passport.session());
 app.use(visitor)
 
 // Routers
