@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { logVisitor } from './../useCases/log-visitor.js';
+import { logVisitor } from '../../useCases/log-visitor.js';
 
 const formattedTimestamp = (): string => {
   const d = new Date();
@@ -10,10 +10,9 @@ const formattedTimestamp = (): string => {
 
 const visitor = (req: Request, res: Response, next: NextFunction): void => {
   const ip = (req.headers['x-forwarded-for'] as string) || req.ip;
-
-  const userAgent = req.headers['user-agent'] || '';
+  const timestamp = formattedTimestamp();
   if (typeof ip === 'string') {
-    logVisitor({ ip, userAgent })
+    logVisitor({ ip, timestamp })
       .then(() => next())
       .catch((error) => {
         console.error('Error logging visitor:', error);

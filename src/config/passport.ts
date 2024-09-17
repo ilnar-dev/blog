@@ -1,8 +1,8 @@
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import crypto from 'crypto';
-import { findById, findByEmail } from '../repositories/user-repository.js';
-import User from '../models/user.js';
+import { findById, findByEmail } from './../repositories/user-repository.js';
+import User from './../models/user.js';
 
 passport.use(new Strategy(function verify(username, password, cb) {
     findByEmail(username).then((user: User) => {

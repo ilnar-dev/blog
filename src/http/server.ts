@@ -3,7 +3,7 @@ import session from 'express-session';
 import { Redis } from 'ioredis';
 import RedisStore from 'connect-redis';
 import fileUpload from 'express-fileupload';
-import passport from './config/passport.js';
+import passport from './../config/passport.js';
 import adminRouter from './routes/admin.js';
 import publicRouter from './routes/public.js';
 import visitor from './middlewares/visitor.js';

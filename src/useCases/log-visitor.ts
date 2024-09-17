@@ -1,13 +1,13 @@
-import connection from '../models/db.js';
-import { format } from 'mysql';
+import connection from './../models/db.js';
+import { format } from 'mysql2';
 
-export async function logVisitor(data: { ip: string; userAgent: string }) {
+export async function logVisitor(data: { ip: string; timestamp: string }) {
   return new Promise((resolve, reject) => {
         let sql = `INSERT INTO visitor (
           ip,
           inserted_at
         ) VAlUES (?, ?)`
-        sql = format(sql, [data.ip, data.userAgent]);
+        sql = format(sql, [data.ip, data.timestamp]);
 
         connection.query(sql, function (error, results) {
             if (error) reject(error);

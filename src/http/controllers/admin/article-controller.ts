@@ -1,8 +1,8 @@
-import Article from './../../models/article.js'
-import { getAll, find } from './../../repositories/article-repository.js'
-import { perform as uploadImage } from './../../useCases/upload-image.js'
-import { perform as updateArticle } from './../../useCases/update-article.js'
-import { perform as createArticle, ArticleDto } from './../../useCases/create-article.js'
+import Article from './../../../models/article.js'
+import { getAll, find } from './../../../repositories/article-repository.js'
+import { perform as uploadImage } from './../../../useCases/upload-image.js'
+import { perform as updateArticle } from './../../../useCases/update-article.js'
+import { perform as createArticle, ArticleDto } from './../../../useCases/create-article.js'
 import { Request, Response } from 'express'
 import { UploadedFile } from 'express-fileupload'
 

@@ -1,6 +1,6 @@
-import connection from '../models/db.js';
-import { format } from 'mysql';
-import Article from '../models/article.js';
+import connection from './../models/db.js';
+import { format } from 'mysql2';
+import Article from './../models/article.js';
 
 export interface ArticleDto {
   title: string;

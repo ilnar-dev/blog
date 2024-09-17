@@ -1,6 +1,6 @@
-import connection from '../models/db.js';
-import { format } from 'mysql';
-import Image from '../models/image.js';
+import connection from './../models/db.js';
+import { format } from 'mysql2';
+import Image from './../models/image.js';
 import { UploadedFile } from 'express-fileupload';
 
 export function perform(image: UploadedFile) {
@@ -18,7 +18,7 @@ export function perform(image: UploadedFile) {
                 connection.query(sql, function (error, results, fields) {
                     if (error) reject(error);
                     let dbImage = new Image();
-                    dbImage.id = results.insertId;
+                    // dbImage.id = results.insertId;
                     dbImage.filename = image.name;
                     dbImage.path = uploadPath;
 

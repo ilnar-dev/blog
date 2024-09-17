@@ -1,4 +1,4 @@
-import { getPublished } from '../../repositories/article-repository.js';
+import { getPublished } from '../../../repositories/article-repository.js';
 import { Request, Response } from 'express';
 
 

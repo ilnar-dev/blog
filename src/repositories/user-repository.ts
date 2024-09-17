@@ -1,13 +1,13 @@
-import connection from '../models/db.js';
-import { format } from 'mysql';
-import User from '../models/user.js';
+import connection from './../models/db.js';
+import { format } from 'mysql2';
+import User from './../models/user.js';
 
 export async function findByEmail (email: string): Promise<User> {
     return new Promise<any>((resolve, reject) => {
         let sql = 'SELECT * FROM user WHERE email = ?'
         sql = format(sql, [email]);
 
-        connection.query(sql, function (error, results, fields) {
+        connection.query(sql, function (error: Error | null, results: any) {
             if (error) reject(error);
             resolve(results)
         })
@@ -33,7 +33,7 @@ export async function findById (id: number): Promise<User> {
         let sql = 'SELECT * FROM user WHERE id = ?'
         sql = format(sql, [id]);
 
-        connection.query(sql, function (error, results, fields) {
+        connection.query(sql, function (error: Error | null, results: any) {
             if (error) reject(error);
             resolve(results)
         })
@@ -56,7 +56,7 @@ export async function create (user: User) {
         let sql = 'INSERT INTO user (name, email, password, salt) VALUES (?, ?, ?, ?)'
         sql = format(sql, [user.name, user.email, user.password, user.salt]);
 
-        connection.query(sql, function (error, results, fields) {
+        connection.query(sql, function (error: Error | null, results: any) {
             if (error) reject(error);
             resolve(results)
         })

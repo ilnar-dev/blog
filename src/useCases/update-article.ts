@@ -1,5 +1,5 @@
 import connection from './../models/db.js';
-import { format } from 'mysql';
+import { format } from 'mysql2';
 import Article from './../models/article.js';
 import { ArticleDto } from './create-article.js';
 

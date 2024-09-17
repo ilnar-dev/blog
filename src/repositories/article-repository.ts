@@ -1,6 +1,6 @@
-import connection from '../models/db.js';
-import { format } from 'mysql';
-import Article from '../models/article.js';
+import connection from './../models/db.js';
+import { format } from 'mysql2';
+import Article from './../models/article.js';
 
 export function find(id: number): Promise<Article> {
     return new Promise<any[]>((resolve, reject) => {
@@ -9,7 +9,7 @@ export function find(id: number): Promise<Article> {
 
         connection.query(sql, function (error, results, fields) {
             if (error) reject(error);
-            resolve(results)
+            resolve(results as any[]);
         })
     })
     .then((results: any[]) => {
@@ -29,9 +29,9 @@ export function find(id: number): Promise<Article> {
             if (results[0].main_image_id) {
                 waitForImage = new Promise<any[]>((resolve, reject) => {
                     let queryString = 'SELECT * FROM image WHERE id = ?';
-                    connection.query(queryString, [results[0].main_image_id], function (error, results, fields) {
+                    connection.query(queryString, [results[0].main_image_id], function (error: Error | null, results: any) {
                         if (error) reject(error);
-                        resolve(results);
+                        resolve(results as any[]);
                     });
                 });
             }
@@ -65,11 +65,11 @@ export function getAll(): Promise<Article[]> {
                 image.file_name
             FROM article JOIN image ON image.id = article.main_image_id`;
 
-        connection.query(queryString, function (error, results, fields) {
+        connection.query(queryString, function (error: Error | null, results: any) {
             if (error) reject(error);
 
             let articles: Article[] = [];
-            results.forEach((element: any) => {
+            (results as any[]).forEach((element: any) => {
                 let article = createArticleFromRow(element);
                 articles.push(article);
             })
@@ -93,11 +93,11 @@ export function getPublished(): Promise<Article[]> {
             FROM article LEFT JOIN image ON image.id = article.main_image_id
             WHERE article.published = 1`;
 
-        connection.query(queryString, function (error, results, fields) {
+        connection.query(queryString, function (error: Error | null, results: any) {
             if (error) reject(error);
 
             let articles: Article[] = [];
-            results.forEach((element: any) => {
+            (results as any[]).forEach((element: any) => {
                 let article = createArticleFromRow(element);
                 articles.push(article);
             })

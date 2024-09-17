@@ -1,7 +1,7 @@
 import readline from 'readline';
-import { create } from './repositories/user-repository.js';
+import { create } from './src/repositories/user-repository.js';
 import crypto from 'crypto';
-import User from './models/user.js';
+import User from './src/models/user.js';
 
 const rl = readline.createInterface({
     input: process.stdin,

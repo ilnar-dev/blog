@@ -1,5 +1,5 @@
-import connection from './../../models/db.js';
-import { format } from 'mysql';
+import connection from './../../../models/db.js';
+import { format } from 'mysql2';
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 
