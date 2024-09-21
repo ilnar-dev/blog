@@ -1,27 +1,29 @@
-import Abstract from './abstract.js'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import Image from './image.js';
 
-class Article extends Abstract {
-    id: number;
-    title: string;
-    text: string;
-    main_image_id: number | null;
-    mainImage: { filename: string };
-    intro: string;
-    published: boolean;
-    publishedOn: Date | null;
+@Entity()
+class Article {
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    constructor(data: Partial<Article> = {}) {
-        super();
-        this.id = data.id ?? 0;
-        this.title = data.title ?? '';
-        this.text = data.text ?? '';
-        this.main_image_id = data.main_image_id ?? null;
-        this.mainImage = data.mainImage ?? { filename: '' };
-        this.intro = data.intro ?? '';
-        this.published = data.published ?? false;
-        this.publishedOn = data.publishedOn ?? new Date();
-        Object.assign(this, data);
-    }
+    @Column()
+    title!: string;
+
+    @Column()
+    intro!: string;
+
+    @Column()
+    text!: string;
+
+    @Column()
+    published!: boolean;
+
+    @Column({ name: 'publishedOn' })
+    publishedOn?: Date;
+
+    @ManyToOne(() => Image, { eager: true })
+    @JoinColumn({ name: 'mainImageId' })
+    mainImage?: Image;
 }
 
 export default Article

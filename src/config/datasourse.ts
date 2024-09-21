@@ -1,4 +1,8 @@
 import { DataSource } from 'typeorm';
+import User from '../models/user.js';
+import Article from '../models/article.js';
+import Image from '../models/image.js';
+import Visitor from '../models/visitor.js';
 
 const dataSource = new DataSource({
   type: 'mysql',
@@ -9,7 +13,7 @@ const dataSource = new DataSource({
   database: process.env.MYSQL_DATABASE,
   synchronize: false,
   logging: true,
-  // entities: ['models/**/*.ts'],
+  entities: [ User, Article, Image, Visitor ],
   migrations: ['dist/src/migration/**/*.js'],
   // subscribers: ['subscriber/**/*.ts'],
 });

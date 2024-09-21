@@ -7,6 +7,10 @@ import passport from './../config/passport.js';
 import adminRouter from './routes/admin.js';
 import publicRouter from './routes/public.js';
 import visitor from './middlewares/visitor.js';
+import "reflect-metadata";
+import dataSource from "./../config/datasourse.js";
+
+await dataSource.initialize();
 
 const app = express();
 

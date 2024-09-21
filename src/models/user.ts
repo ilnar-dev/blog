@@ -1,21 +1,21 @@
-import Abstract from "./abstract.js"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-class User extends Abstract {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    salt: string;
+@Entity()
+class User {
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    constructor(data: Partial<User> = {}) {
-        super();
-        this.id = data.id ?? 0;
-        this.name = data.name ?? '';
-        this.email = data.email ?? '';
-        this.password = data.password ?? '';
-        this.salt = data.salt ?? '';
-        Object.assign(this, data);
-    }
+    @Column()
+    name!: string;
+
+    @Column()
+    email!: string;
+
+    @Column()
+    password!: string;
+
+    @Column()
+    salt!: string;
 }
 
 export default User

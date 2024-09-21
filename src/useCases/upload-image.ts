@@ -1,29 +1,21 @@
-import connection from './../models/db.js';
-import { format } from 'mysql2';
-import Image from './../models/image.js';
 import { UploadedFile } from 'express-fileupload';
+import Image from './../models/image.js';
+import { create as createImage } from '../repositories/image-repository.js';
 
-export function perform(image: UploadedFile) {
-    const uploadDir = process.env.UPLOAD_DIR;
-    let uploadPath = uploadDir + image.name;
+export async function perform(image: UploadedFile): Promise<Image> {
+    const uploadDir = process.env.UPLOAD_DIR || '/Users/ilnar/Projects/Blog/public/uploads/';
+    const uploadPath = uploadDir + image.name;
 
-    return image.mv(uploadPath)
-        .then(() => {
-            return new Promise<Image>((resolve, reject) => {
-                let sql = "" +
-                    "INSERT INTO image (file_name, path) VALUES (?, ?)";
-                let inserts = [image.name, uploadPath];
-                sql = format(sql, inserts);
+    try {
+        await image.mv(uploadPath);
+        
+        const dbImage = await createImage({
+            fileName: image.name,
+            path: uploadPath
+        });
 
-                connection.query(sql, function (error, results, fields) {
-                    if (error) reject(error);
-                    let dbImage = new Image();
-                    // dbImage.id = results.insertId;
-                    dbImage.filename = image.name;
-                    dbImage.path = uploadPath;
-
-                    resolve(dbImage);
-                })
-            })
-        })
+        return dbImage;
+    } catch (error: any) {
+        throw new Error(`Failed to upload image: ${error.message}`);
+    }
 }

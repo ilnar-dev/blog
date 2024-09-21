@@ -1,17 +1,17 @@
-import Abstract from "./abstract.js"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import Article from './article.js';
 
-class Image extends Abstract {
-    id: number;
-    filename: string;
-    path: string;
+@Entity()
+export default class Image {
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    constructor(data: Partial<Image> = {}) {
-        super();
-        this.id = data.id ?? 0;
-        this.filename = data.filename ?? '';
-        this.path = data.path ?? '';
-        Object.assign(this, data);
-    }
+    @Column()
+    fileName!: string;
+
+    @Column()
+    path!: string;
+
+    @OneToMany(() => Article, article => article.mainImage)
+    articles?: Article[];
 }
-
-export default Image

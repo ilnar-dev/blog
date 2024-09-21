@@ -1,77 +1,18 @@
-import connection from './../models/db.js';
-import { format } from 'mysql2';
+import { Repository } from 'typeorm';
 import User from './../models/user.js';
+import dataSource from './../config/datasourse.js';
 
-export async function findByEmail (email: string): Promise<User> {
-    return new Promise<any>((resolve, reject) => {
-        let sql = 'SELECT * FROM user WHERE email = ?'
-        sql = format(sql, [email]);
+export const userRepository: Repository<User> = dataSource.getRepository(User);
 
-        connection.query(sql, function (error: Error | null, results: any) {
-            if (error) reject(error);
-            resolve(results)
-        })
-    }).then((results: any) => {
-        return new Promise<User>((resolve, reject) => {
-            if (results.length === 0) {
-                resolve(new User());
-            }
-            let user = new User();
-            user.id = results[0].id;
-            user.name = results[0].name;
-            user.email = results[0].email;
-            user.password = results[0].password;
-            user.salt = results[0].salt;
-
-            resolve(user);
-        });
-    });
+export async function findByEmail(email: string): Promise<User | null> {
+    return userRepository.findOne({ where: { email } });
 }
 
-export async function findById (id: number): Promise<User> {
-    return new Promise<any>((resolve, reject) => {
-        let sql = 'SELECT * FROM user WHERE id = ?'
-        sql = format(sql, [id]);
-
-        connection.query(sql, function (error: Error | null, results: any) {
-            if (error) reject(error);
-            resolve(results)
-        })
-    }).then((results) => {
-        return new Promise((resolve, reject) => {
-            let user = new User();
-            user.id = results[0].id;
-            user.name = results[0].name;
-            user.email = results[0].email;
-            user.password = results[0].password;
-            user.salt = results[0].salt;
-
-            resolve(user);
-        });
-    });
+export async function findById(id: number): Promise<User | null> {
+    return userRepository.findOne({ where: { id } });
 }
 
-export async function create (user: User) {
-    return new Promise((resolve, reject) => {
-        let sql = 'INSERT INTO user (name, email, password, salt) VALUES (?, ?, ?, ?)'
-        sql = format(sql, [user.name, user.email, user.password, user.salt]);
-
-        connection.query(sql, function (error: Error | null, results: any) {
-            if (error) reject(error);
-            resolve(results)
-        })
-    }).then((results: any) => {
-        return new Promise((resolve, reject) => {
-            let user = new User();
-            user.id = results.insertId;
-            user.name = results.name;
-            user.email = results.email;
-            user.password = results.password;
-            user.salt = results.salt;
-
-            resolve(user);
-        });
-    }).catch((error) => {
-        console.log(error);
-    });
+export async function create(userData: Partial<User>): Promise<User> {
+    const user = userRepository.create(userData);
+    return userRepository.save(user);
 }

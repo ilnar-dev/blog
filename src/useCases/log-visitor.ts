@@ -1,21 +1,15 @@
-import connection from './../models/db.js';
-import { format } from 'mysql2';
+import { visitorRepository } from './../repositories/visitor-repository.js';
+import Visitor from './../models/visitor.js';
 
-export async function logVisitor(data: { ip: string; timestamp: string }) {
-  return new Promise((resolve, reject) => {
-        let sql = `INSERT INTO visitor (
-          ip,
-          inserted_at
-        ) VAlUES (?, ?)`
-        sql = format(sql, [data.ip, data.timestamp]);
+export interface VisitorDto {
+  ip: string;
+  timestamp: Date;
+}
 
-        connection.query(sql, function (error, results) {
-            if (error) reject(error);
-            resolve(results)
-        })
-    }).then((results) => {
-        return results;
-    }).catch((error) => {
-        console.log(error);
-    });
+export async function perform(visitorDto: VisitorDto): Promise<Visitor> {
+  const newVisitor = new Visitor();
+  newVisitor.ip = visitorDto.ip;
+  newVisitor.insertedAt = visitorDto.timestamp;
+
+  return await visitorRepository.save(newVisitor);
 }

@@ -1,32 +1,25 @@
-import connection from './../models/db.js';
-import { format } from 'mysql2';
 import Article from './../models/article.js';
 import { ArticleDto } from './create-article.js';
+import { articleRepository } from './../repositories/article-repository.js';
+import { imageRepository } from './../repositories/image-repository.js';
+export async function perform(originalArticle: Article, articleDto: ArticleDto): Promise<Article> {
+    if (articleDto.published === 1 && originalArticle.publishedOn === null) {
+        originalArticle.publishedOn = new Date();
+    }
 
-type ArticleDTO = ArticleDto;
-
-
-export function perform(originalArticle: Article, articleDto: ArticleDTO) {
-    return new Promise((resolve) => {
-        let publishedOn = originalArticle.publishedOn;
-        if (1 === articleDto.published && null === originalArticle.publishedOn) {
-            publishedOn = new Date();
+    if (articleDto.mainImageId) {
+        const mainImage = await imageRepository.findOne({ where: { id: articleDto.mainImageId } });
+        if (mainImage) {
+            originalArticle.mainImage = mainImage;
         }
-        let sql = "UPDATE article SET title = ?, intro = ?, text = ?, published = ?, main_image_id = ?, published_on = ? WHERE id = ?";
-        let inserts = [
-            articleDto.title,
-            articleDto.intro,
-            articleDto.text,
-            articleDto.published,
-            articleDto.mainImageId,
-            publishedOn,
-            originalArticle.id
-        ];
-        sql = format(sql, inserts);
+    }
 
-        connection.query(sql, function (error, results) {
-            if (error) throw error;
-            resolve(results)
-        })
-    })
+    // Update article properties
+    originalArticle.title = articleDto.title;
+    originalArticle.intro = articleDto.intro;
+    originalArticle.text = articleDto.text;
+    originalArticle.published = articleDto.published === 1;
+
+    // Save the updated article using the repository
+    return await articleRepository.save(originalArticle);
 }

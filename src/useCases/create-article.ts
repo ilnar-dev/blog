@@ -1,6 +1,6 @@
-import connection from './../models/db.js';
-import { format } from 'mysql2';
 import Article from './../models/article.js';
+import { articleRepository } from './../repositories/article-repository.js';
+import { imageRepository } from './../repositories/image-repository.js';
 
 export interface ArticleDto {
   title: string;
@@ -10,37 +10,25 @@ export interface ArticleDto {
   mainImageId: number | null;
 }
 
-export function perform(articleDto: ArticleDto): Promise<Article> {
-  return new Promise((resolve, reject) => {
-    let publishedOn: Date | null = null;
-    if (articleDto.published === 1) {
-      publishedOn = new Date();
-    }
-    const sql =
-      "INSERT INTO article (title, intro, text, published, main_image_id, published_on) VALUES (?, ?, ?, ?, ?, ?)";
-    const inserts = [
-      articleDto.title,
-      articleDto.intro,
-      articleDto.text,
-      articleDto.published,
-      articleDto.mainImageId,
-      publishedOn
-    ];
-    const formattedSql = format(sql, inserts);
+export async function perform(articleDto: ArticleDto): Promise<Article> {
+  const newArticle = new Article();
 
-    connection.query(formattedSql, (error: Error | null, results: any) => {
-      if (error) reject(error);
-      else {
-        const newArticle = new Article();
-        newArticle.id = results.insertId;
-        newArticle.title = articleDto.title;
-        newArticle.intro = articleDto.intro;
-        newArticle.text = articleDto.text;
-        newArticle.published = Boolean(articleDto.published);
-        newArticle.main_image_id = articleDto.mainImageId ?? null;
-        newArticle.publishedOn = publishedOn;
-        resolve(newArticle);
-      }
-    });
-  });
+  newArticle.title = articleDto.title;
+  newArticle.intro = articleDto.intro;
+  newArticle.text = articleDto.text;
+  newArticle.published = articleDto.published === 1;
+
+  if (articleDto.published === 1) {
+    newArticle.publishedOn = new Date();
+  }
+
+  if (articleDto.mainImageId) {
+    const mainImage = await imageRepository.findOne({ where: { id: articleDto.mainImageId } });
+    if (mainImage) {
+      newArticle.mainImage = mainImage;
+    }
+  }
+
+  // Save the new article using the repository
+  return await articleRepository.save(newArticle);
 }

@@ -5,7 +5,7 @@ import { findById, findByEmail } from './../repositories/user-repository.js';
 import User from './../models/user.js';
 
 passport.use(new Strategy(function verify(username, password, cb) {
-    findByEmail(username).then((user: User) => {
+    findByEmail(username).then((user: User | null) => {
         if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
         
         const storedHash = Buffer.from(user.password, "hex");
