@@ -18,12 +18,12 @@ class Article {
     @Column()
     published!: boolean;
 
-    @Column({ name: 'publishedOn' })
-    publishedOn?: Date;
+    @Column({ type: 'datetime', name: 'publishedOn' })
+    publishedOn?: Date | null;
 
     @ManyToOne(() => Image, { eager: true })
     @JoinColumn({ name: 'mainImageId' })
-    mainImage?: Image;
+    mainImage?: Image | null;
 }
 
 export default Article

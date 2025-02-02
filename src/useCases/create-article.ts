@@ -6,7 +6,7 @@ export interface ArticleDto {
   title: string;
   intro: string;
   text: string;
-  published: number;
+  published: boolean;
   mainImageId: number | null;
 }
 
@@ -16,9 +16,9 @@ export async function perform(articleDto: ArticleDto): Promise<Article> {
   newArticle.title = articleDto.title;
   newArticle.intro = articleDto.intro;
   newArticle.text = articleDto.text;
-  newArticle.published = articleDto.published === 1;
+  newArticle.published = articleDto.published;
 
-  if (articleDto.published === 1) {
+  if (articleDto.published) {
     newArticle.publishedOn = new Date();
   }
 

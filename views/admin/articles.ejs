@@ -1,27 +1,32 @@
 <%- include('header'); %>
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-    <a class="btn btn-primary" href="/admin/articles/add">Add new</a>
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-primary" href="/admin/articles/add">Add new</a>
+    </div>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
+            <th scope="col">Text</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
         <% articles.forEach(function(article) { %>
             <tr>
-                <th scope="row">
-                    <a href="/admin/articles/<%=article.id%>"><%=article.id%></a>
-                </th>
+                <th scope="row"><%=article.id%></th>
                 <td><%=article.title%></td>
                 <td><%=article.text%></td>
-                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                <td class="action-buttons">
+                    <a href="/admin/articles/<%=article.id%>" class="btn btn-primary btn-sm">Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                </td>
             </tr>
         <% }) %>
         </tbody>
     </table>
 </main>
+
 <%- include('footer'); %>

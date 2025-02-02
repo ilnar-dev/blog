@@ -98,4 +98,13 @@ body {
     border-color: transparent;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
 
+.form-control-file {
+    border: none;
+    padding: 0;
+    background: none;
+}

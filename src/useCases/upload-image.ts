@@ -19,3 +19,4 @@ export async function perform(image: UploadedFile): Promise<Image> {
         throw new Error(`Failed to upload image: ${error.message}`);
     }
 }
+  

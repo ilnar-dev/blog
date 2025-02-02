@@ -13,7 +13,10 @@ export function list (req: Request, res: Response) {
 
 export function edit (req: Request, res: Response) {
     find(parseInt(req.params.id, 10))
-        .then(article => res.render("admin/article", {article: article, url: req.originalUrl}))
+        .then(article => {
+            console.log(article)
+            res.render("admin/article", {article: article, url: req.originalUrl})
+        })
         .catch(error => res.status(404).send(error.message))
 }
 
@@ -27,13 +30,8 @@ export async function update(req: Request, res: Response) {
             intro: req.body.intro,
             text: req.body.text,
             mainImageId: req.body.main_image_id,
-            published: 0
+            published: req.body.published === 'on' ? true : false
         };
-        if ('on' === req.body.published) {
-            articleDto.published = 1;
-        } else {
-            articleDto.published = 0;
-        }
 
         if (req.files && 'mainImage' in req.files) {
             const mainImage = Array.isArray(req.files.mainImage) 
@@ -41,14 +39,12 @@ export async function update(req: Request, res: Response) {
                 : req.files.mainImage;
             let dbImage = await uploadImage(mainImage);
             articleDto.mainImageId = dbImage.id;
-            await updateArticle(originalArticle, articleDto);
-
-            res.redirect("/admin/articles/" + id);
-        } else {
-            await updateArticle(originalArticle, articleDto);
-
-            res.redirect("/admin/articles/" + id);
+        } else if (articleDto.mainImageId === '') {
+            // If main_image_id is empty string, it means the image was deleted
+            articleDto.mainImageId = null;
         }
+        await updateArticle(originalArticle, articleDto);
+        res.redirect("/admin/articles/" + id);
     } catch (error) {
         res.status(404).send('Article not found'); //todo: make a redirect to 404 page
     }
@@ -64,17 +60,15 @@ export async function create(req: Request, res: Response) {
         title: req.body.title,
         intro: req.body.intro,
         text: req.body.text,
-        published: req.body.published === 'on' ? 1 : 0,
+        published: req.body.published === 'on' ? true : false,
         mainImageId: null
     };
-
     try {
         if (req.files && 'mainImage' in req.files) {
             const mainImage = req.files.mainImage as UploadedFile;
             const dbImage = await uploadImage(mainImage);
             articleDto.mainImageId = dbImage.id;
         }
-
         const newArticle = await createArticle(articleDto);
         res.redirect(`/admin/articles/${newArticle.id}`);
     } catch (error) {
